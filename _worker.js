@@ -28,13 +28,7 @@ export default {
 function isSafeUrl(u) {
   try {
     const parsed = new URL(u);
-    if (!['http:', 'https:'].includes(parsed.protocol)) return false;
-    const host = parsed.hostname.toLowerCase();
-    if (host === 'localhost' || host === '0.0.0.0') return false;
-    if (/^127\./.test(host) || /^10\./.test(host) || /^192\.168\./.test(host)) return false;
-    if (/^172\.(1[6-9]|2\d|3[0-1])\./.test(host)) return false;
-    if (host === '::1' || host.startsWith('fc') || host.startsWith('fd')) return false;
-    return true;
+    return ['http:', 'https:'].includes(parsed.protocol);
   } catch { return false; }
 }
 
@@ -307,7 +301,7 @@ function gh(env, path, opts = {}) {
   return fetch(`https://api.github.com${path}`, {
     ...opts,
     headers: {
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${env.GH_TOKEN}`,
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'User-Agent': 'APK-Builder-CF-Worker/1.0',
